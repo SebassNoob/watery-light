@@ -1,0 +1,42 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./app.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String        @id
+  username     String
+  createdAt    DateTime      @default(now())
+  email        String?
+  sessions     Session[]
+  oauthAccount OAuthAccount?
+  posts        Post[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model OAuthAccount {
+  providerId     String
+  providerUserId String
+  userId         String @unique
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([providerId, providerUserId])
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  message   String
+  createdAt DateTime @default(now())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+}
