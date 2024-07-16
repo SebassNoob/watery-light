@@ -1,5 +1,5 @@
 node_modules/
 .next/
 .git/
-*.db
-*.db-journal
+**/*.db
+**/*.db-journal
