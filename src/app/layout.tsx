@@ -34,7 +34,6 @@ export default function RootLayout({
 					<AuthProvider>
 						<main className="bg-slate-100 dark:bg-slate-900 min-h-screen w-full transition-all p-8">
 							{children}
-
 							<ThemeButton className="fixed bottom-0 right-0 m-4" />
 						</main>
 					</AuthProvider>

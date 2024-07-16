@@ -1,6 +1,11 @@
 "use client";
 import { createContext } from "react";
-import { useMemo, useState, useEffect, useLayoutEffect } from "react";
+import {
+	useMemo,
+	useState,
+	useLayoutEffect,
+	useSyncExternalStore,
+} from "react";
 import { Breakpoints, MOBILE_MEDIA_QUERY } from "./constants";
 import type {
 	ClientContextProps,
@@ -27,44 +32,31 @@ export const ClientProvider = ({ children }: ClientProviderProps) => {
 		);
 	}, []);
 
-	const [breakpoint, setBreakpoint] = useState<Breakpoint>(() => {
+	const subscribeToWindowResize = (callback: () => void) => {
+		window.addEventListener("resize", callback);
+		return () => window.removeEventListener("resize", callback);
+	};
+
+	const getBreakpoint = () => {
 		// Find the first breakpoint that matches the current window size
 		const indexOfLastQuery = Object.values(queries)
 			.map(query => window.matchMedia(query).matches)
 			.lastIndexOf(true);
-		return Object.keys(queries)[indexOfLastQuery] as Breakpoint;
-	});
+		return Object.keys(queries)[indexOfLastQuery] as
+			| Breakpoint
+			| undefined;
+	};
 
-	const [isMobile, setIsMobile] = useState<boolean>(() => {
-		// Check if the current window size is mobile
-		return window.matchMedia(MOBILE_MEDIA_QUERY).matches;
-	});
+	const getIsMobile = () => window.matchMedia(MOBILE_MEDIA_QUERY).matches;
 
-	useEffect(() => {
-		// Create a list of media query lists
-		const mediaQueryLists = Object.values(queries).map(query =>
-			window.matchMedia(query),
-		);
-
-		// Handle window resize events
-		const handleResize = () => {
-			const indexOfLastQuery = mediaQueryLists
-				.map(mql => mql.matches)
-				.lastIndexOf(true);
-			setBreakpoint(Object.keys(queries)[indexOfLastQuery] as Breakpoint);
-			setIsMobile(window.matchMedia(MOBILE_MEDIA_QUERY).matches);
-		};
-
-		// Add the resize event listener
-		window.addEventListener("resize", handleResize);
-		// Call the resize handler once to set the initial breakpoint
-		handleResize();
-
-		// Remove the resize event listener on cleanup
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [queries]);
+	const breakpoint = useSyncExternalStore(
+		subscribeToWindowResize,
+		getBreakpoint,
+	);
+	const isMobile = useSyncExternalStore(
+		subscribeToWindowResize,
+		getIsMobile,
+	);
 
 	const [theme, setTheme] = useState<Theme>(() => {
 		const localStorageTheme = localStorage.getItem("theme");
@@ -89,7 +81,7 @@ export const ClientProvider = ({ children }: ClientProviderProps) => {
 
 	const value = useMemo(
 		() => ({ theme, setTheme, breakpoint, isMobile }),
-		[theme, setTheme, breakpoint, isMobile],
+		[theme, breakpoint, isMobile],
 	);
 
 	return (

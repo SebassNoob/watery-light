@@ -12,6 +12,7 @@ export function ThemeButton({ className }: ThemeButtonProps) {
 		<button
 			onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 			className={twMerge("p-2 rounded bg-white dark:bg-black", className)}
+			type="button"
 		>
 			<Image
 				src={`/common/${theme === "light" ? "moon" : "sun"}.svg`}

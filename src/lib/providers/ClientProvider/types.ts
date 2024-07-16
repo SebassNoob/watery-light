@@ -7,7 +7,7 @@ export type Breakpoint = "sm" | "md" | "lg" | "xl" | "2xl";
 export interface ClientContextProps {
 	theme: Theme;
 	setTheme: (theme: Theme) => void;
-	breakpoint: Breakpoint;
+	breakpoint?: Breakpoint;
 	isMobile: boolean;
 }
 

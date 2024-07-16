@@ -4,7 +4,7 @@ POC OAuth flow for a simple comments site.
 
 Built with nextjs, prisma and lucia!
 
-Supported OAuths: discord (github and google coming soon)
+Supported OAuths: discord, google (github coming soon)
 
 ## Run
 

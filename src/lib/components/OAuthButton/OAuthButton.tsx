@@ -1,7 +1,7 @@
 import type { OAuthButtonProps, SizedSocialIconProps } from "./types";
 import { Button } from "@lib/components";
 
-import { discordSignin } from "@lib/actions";
+import { discordSignin, googleSignin } from "@lib/actions";
 
 import { SocialIcon } from "react-social-icons";
 import "react-social-icons/discord";
@@ -47,7 +47,7 @@ export class OAuthButton {
 		return _oAuthButton({
 			network: "google",
 			provider: "Google",
-			action: async () => {},
+			action: googleSignin,
 		});
 	}
 }

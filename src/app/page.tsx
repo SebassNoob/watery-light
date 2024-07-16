@@ -1,5 +1,3 @@
-import { SubmitForm } from "@lib/components";
-import { Post } from "@lib/components";
 import { client } from "@db";
 import { PostsPage } from "@lib/components";
 

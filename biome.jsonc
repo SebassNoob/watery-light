@@ -7,14 +7,18 @@
 		"enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "noUnusedImports": "warn"
+      },
       "suspicious": {
         "noDebugger": "off",
         "noConsoleLog": "info",
         "noExplicitAny": "warn"
+        
       },
       "style": {
         "noShoutyConstants": "warn",
-        "useNamingConvention": "error"
+        "useNamingConvention": "warn"
       }
     }
   },

@@ -2,8 +2,8 @@ import type { OAuthProviders } from "./constants";
 
 export type OAuthCookieNames = {
 	[K in OAuthProviders]: {
-		providerId: string;
 		state: string;
+		codeVerifier?: string;
 	};
 };
 

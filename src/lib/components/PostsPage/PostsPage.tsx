@@ -23,14 +23,17 @@ export function PostsPage({ initialPosts }: PostsPageProps) {
 	}
 
 	const handleOptimisticUpdate = async (formData: FormData) => {
+		if (!user) {
+			throw new Error("User is not authenticated");
+		}
 		addOptimisticPost({
 			id: Math.random().toString(),
 			message: formData.get("message") as string,
 			createdAt: new Date(),
-			authorId: user!.id,
-			author: user!,
+			authorId: user.id,
+			author: user,
 		});
-		const returned = await createPost(user!, formData);
+		const returned = await createPost(user, formData);
 		setPosts(prev => [returned, ...prev]);
 	};
 

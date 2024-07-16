@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import type { Session as LuciaSession, User as LuciaUser } from "lucia";
-import { cookies } from "next/headers";
 
 const apiUrl = process.env.API_URL;
 

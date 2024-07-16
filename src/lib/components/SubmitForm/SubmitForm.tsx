@@ -55,14 +55,14 @@ export function SubmitForm({ action }: SubmitFormProps) {
 				<RawForm action={action} disabled={false} />
 			</div>
 		);
-	} else {
-		return (
-			<div className="relative p-4 min-w-48">
-				<div className="absolute inset-0 bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm flex justify-center items-center rounded-md z-10">
-					<OAuthButton.Discord />
-				</div>
-				<RawForm action={action} disabled={true} />
-			</div>
-		);
 	}
+	return (
+		<div className="relative p-4 min-w-48">
+			<div className="absolute inset-0 bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm flex gap-2 justify-center items-center rounded-md z-10">
+				<OAuthButton.Discord />
+				<OAuthButton.Google />
+			</div>
+			<RawForm action={action} disabled={true} />
+		</div>
+	);
 }
