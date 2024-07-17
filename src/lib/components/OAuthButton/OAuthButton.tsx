@@ -1,7 +1,7 @@
 import type { OAuthButtonProps, SizedSocialIconProps } from "./types";
 import { Button } from "@lib/components";
 
-import { discordSignin, googleSignin } from "@lib/actions";
+import { discordSignin, googleSignin, githubSignin } from "@lib/actions";
 
 import { SocialIcon } from "react-social-icons";
 import "react-social-icons/discord";
@@ -20,7 +20,7 @@ function _oAuthButton({ network, provider, action }: OAuthButtonProps) {
 	const serverAction = action.bind(null);
 	return (
 		<form action={serverAction}>
-			<Button type="submit" className="flex gap-2 items-center">
+			<Button type="submit" className="flex gap-1 items-center">
 				<_SizedSocialIcon network={network} />
 				Sign in with {provider}
 			</Button>
@@ -40,7 +40,7 @@ export class OAuthButton {
 		return _oAuthButton({
 			network: "github",
 			provider: "GitHub",
-			action: async () => {},
+			action: githubSignin,
 		});
 	}
 	static Google() {

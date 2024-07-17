@@ -18,6 +18,7 @@ type AuthResult =
 	  };
 
 export async function middleware(request: NextRequest) {
+	// https://github.com/vercel/next.js/discussions/46722
 	const authResponse = await fetch(`${apiUrl}/auth`, {
 		next: { tags: ["auth"] },
 		cache: "force-cache",

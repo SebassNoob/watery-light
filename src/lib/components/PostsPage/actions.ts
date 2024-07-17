@@ -4,12 +4,19 @@ import { validateForm } from "@utils/validateForm";
 import { client } from "@db";
 import type { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { validateSessionCookie } from "@/lib/actions";
 
 const postFormSchema = zfd.formData({
 	message: zfd.text(),
 });
 
 export async function createPost(author: User, formData: FormData) {
+	// authenticate the user
+	const authResult = await validateSessionCookie();
+	if (!authResult.session) {
+		throw new Error("Not authenticated");
+	}
+
 	const result = validateForm(postFormSchema, formData);
 	if (!result.isValid) {
 		throw new Error("Invalid form data");

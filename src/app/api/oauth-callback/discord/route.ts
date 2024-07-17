@@ -1,11 +1,18 @@
 export const dynamic = "force-dynamic";
 import { z } from "zod";
+import { validateUrlParams } from "@utils/validateUrlParams";
 import { cookies } from "next/headers";
 import { client } from "@db";
-import { createSession, oAuthCookieNames, discord } from "@lib/actions";
+import {
+	createSession,
+	oAuthCookieNames,
+	discord,
+	OAuthProviders,
+} from "@lib/actions";
 import type { DiscordSigninCallbackData } from "./types";
 import { revalidateTag } from "next/cache";
 import { generateIdFromEntropySize } from "lucia";
+import type { DiscordTokens } from "arctic";
 
 // validate the query parameters
 const validate = z.object({
@@ -13,29 +20,18 @@ const validate = z.object({
 	state: z.string(),
 });
 
-const provider = "discord";
+const provider = OAuthProviders.discord;
 const { state: discordOAuthStateCookie } = oAuthCookieNames.discord;
 
 export async function GET(request: Request): Promise<Response> {
-	// grab the query params
-	const { searchParams } = new URL(request.url);
-	const [searchParamCode, searchParamState] = [
-		searchParams.get("code"),
-		searchParams.get("state"),
-	];
-
-	// validate the query params
-	const v = validate.safeParse({
-		code: searchParamCode,
-		state: searchParamState,
-	});
-	if (!v.success) {
-		return new Response("Invalid query parameters", { status: 400 });
+	const data = validateUrlParams(validate, new URL(request.url));
+	if (!data) {
+		return new Response("Invalid query params", { status: 400 });
 	}
 
 	// destructure the query params
 	// and check if the state cookie is valid (prevents CSRF)
-	const { code, state } = v.data satisfies DiscordSigninCallbackData;
+	const { code, state } = data satisfies DiscordSigninCallbackData;
 	const discordOauthState = cookies().get(discordOAuthStateCookie)?.value;
 	if (state !== discordOauthState) {
 		return new Response("Invalid state", { status: 400 });
@@ -44,7 +40,14 @@ export async function GET(request: Request): Promise<Response> {
 	cookies().set(discordOAuthStateCookie, "", { expires: new Date(0) });
 
 	// exchange the code for tokens
-	const tokens = await discord.validateAuthorizationCode(code);
+	let tokens: DiscordTokens;
+	try {
+		tokens = await discord.validateAuthorizationCode(code);
+	} catch (e) {
+		return new Response("Failed to validate authorization code", {
+			status: 500,
+		});
+	}
 
 	// fetch the user data
 	let user: { id: string; email: string; username: string };
@@ -102,7 +105,7 @@ export async function GET(request: Request): Promise<Response> {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: "/",
+			Location: "/?authenticated=true",
 		},
 	});
 }

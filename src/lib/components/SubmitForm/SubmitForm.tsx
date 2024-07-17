@@ -22,7 +22,7 @@ function RawForm({ action, disabled }: RawFormProps) {
 	return (
 		<form
 			action={action}
-			className="flex flex-col items-center justify-center gap-4  mx-auto"
+			className="flex flex-col items-center justify-center gap-4 mx-auto"
 			onSubmit={e => setMessageEmpty(true)}
 		>
 			<TextInput
@@ -58,9 +58,10 @@ export function SubmitForm({ action }: SubmitFormProps) {
 	}
 	return (
 		<div className="relative p-4 min-w-48">
-			<div className="absolute inset-0 bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm flex gap-2 justify-center items-center rounded-md z-10">
+			<div className="absolute inset-0 bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-md z-10 flex gap-2 justify-center items-center flex-col md:flex-row p-2">
 				<OAuthButton.Discord />
 				<OAuthButton.Google />
+				<OAuthButton.GitHub />
 			</div>
 			<RawForm action={action} disabled={true} />
 		</div>

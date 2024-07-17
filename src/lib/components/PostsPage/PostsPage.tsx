@@ -1,11 +1,24 @@
 "use client";
-import { useOptimistic, useState, useContext } from "react";
+import { useOptimistic, useState, useContext, useEffect } from "react";
 import { AuthContext } from "@lib/providers";
 import type { PostsPageProps, PostWithAuthor } from "./types";
 import { SubmitForm, Post } from "@lib/components";
 import { createPost } from "./actions";
+import { toast } from "react-toastify";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export function PostsPage({ initialPosts }: PostsPageProps) {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (searchParams.has("authenticated")) {
+			toast.success("Successfully authenticated!");
+			// remove the query param
+			router.replace("/", undefined);
+		}
+	}, []);
+
 	const [posts, setPosts] = useState(initialPosts);
 	const [optimisticPosts, addOptimisticPost] = useOptimistic(
 		posts.map(post => ({ ...post, loading: false })),
@@ -33,12 +46,16 @@ export function PostsPage({ initialPosts }: PostsPageProps) {
 			authorId: user.id,
 			author: user,
 		});
-		const returned = await createPost(user, formData);
-		setPosts(prev => [returned, ...prev]);
+		try {
+			const returned = await createPost(user, formData);
+			setPosts(prev => [returned, ...prev]);
+		} catch (e) {
+			toast.error("Failed to create post");
+		}
 	};
 
 	return (
-		<>
+		<div className="w-7/8 sm:w-3/4 md:w-5/8 lg:w-1/2 m-auto">
 			<section>
 				<SubmitForm action={handleOptimisticUpdate} />
 			</section>
@@ -53,6 +70,6 @@ export function PostsPage({ initialPosts }: PostsPageProps) {
 					/>
 				))}
 			</section>
-		</>
+		</div>
 	);
 }

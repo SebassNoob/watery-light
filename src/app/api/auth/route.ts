@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { lucia } from "@db";
-import type { AuthResult } from "./types";
+import type { AuthResult } from "@lib/actions";
 
 export const dynamic = "force-dynamic";
 

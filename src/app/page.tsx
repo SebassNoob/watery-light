@@ -15,9 +15,5 @@ export default async function Home() {
 		},
 	});
 
-	return (
-		<div className="w-7/8 sm:w-3/4 md:w-5/8 lg:w-1/2 m-auto">
-			<PostsPage initialPosts={posts} />
-		</div>
-	);
+	return <PostsPage initialPosts={posts} />;
 }
