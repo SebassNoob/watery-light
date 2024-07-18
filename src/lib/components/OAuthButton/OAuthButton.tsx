@@ -1,28 +1,24 @@
 import type { OAuthButtonProps, SizedSocialIconProps } from "./types";
 import { Button } from "@lib/components";
-
 import { discordSignin, googleSignin, githubSignin } from "@lib/actions";
 
-import { SocialIcon } from "react-social-icons";
-import "react-social-icons/discord";
-import "react-social-icons/github";
-import "react-social-icons/google";
+import Image from "next/image";
 
-function _SizedSocialIcon({ network }: SizedSocialIconProps) {
+function _SizedSocialIcon({ path }: SizedSocialIconProps) {
 	return (
 		<div>
-			<SocialIcon network={network} style={{ height: 24, width: 24 }} />
+			<Image src={path} width={24} height={24} alt={path} />
 		</div>
 	);
 }
 
-function _oAuthButton({ network, provider, action }: OAuthButtonProps) {
+function _OAuthButton({ name, path, action }: OAuthButtonProps) {
 	const serverAction = action.bind(null);
 	return (
 		<form action={serverAction}>
 			<Button type="submit" className="flex gap-1 items-center">
-				<_SizedSocialIcon network={network} />
-				Sign in with {provider}
+				<_SizedSocialIcon path={path} />
+				Sign in with {name}
 			</Button>
 		</form>
 	);
@@ -30,23 +26,23 @@ function _oAuthButton({ network, provider, action }: OAuthButtonProps) {
 
 export class OAuthButton {
 	static Discord() {
-		return _oAuthButton({
-			network: "discord",
-			provider: "Discord",
+		return _OAuthButton({
+			name: "Discord",
+			path: "/icons/discord.svg",
 			action: discordSignin,
 		});
 	}
 	static GitHub() {
-		return _oAuthButton({
-			network: "github",
-			provider: "GitHub",
+		return _OAuthButton({
+			name: "GitHub",
+			path: "/icons/github.svg",
 			action: githubSignin,
 		});
 	}
 	static Google() {
-		return _oAuthButton({
-			network: "google",
-			provider: "Google",
+		return _OAuthButton({
+			name: "Google",
+			path: "/icons/google.svg",
 			action: googleSignin,
 		});
 	}

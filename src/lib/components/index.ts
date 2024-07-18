@@ -5,3 +5,4 @@ export * from "./TextInput";
 export * from "./Button";
 export * from "./SubmitForm";
 export * from "./PostsPage";
+export * from "./Toast";

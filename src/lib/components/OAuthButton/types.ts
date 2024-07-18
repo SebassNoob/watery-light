@@ -1,9 +1,9 @@
 export interface OAuthButtonProps {
-	network: string;
-	provider: string;
+	name: string;
+	path: string;
 	action: () => Promise<void>;
 }
 
 export interface SizedSocialIconProps {
-	network: string;
+	path: OAuthButtonProps["path"];
 }
