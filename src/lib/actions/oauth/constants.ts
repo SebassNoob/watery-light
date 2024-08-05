@@ -1,9 +1,9 @@
 import type { OAuthCookieNames } from "./types";
 
 export enum OAuthProviders {
-	discord = "discord",
-	google = "google",
-	github = "github",
+	Discord = "discord",
+	Google = "google",
+	Github = "github",
 }
 
 export const oAuthCookieNames = {

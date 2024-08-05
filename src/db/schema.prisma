@@ -28,8 +28,7 @@ model OAuthAccount {
   providerId     String
   providerUserId String
   userId         String @unique
-  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user           User   @relation(references: [id], fields: [userId], onDelete: Cascade)
   @@id([providerId, providerUserId])
 }
 

@@ -20,7 +20,7 @@ const validate = z.object({
 	state: z.string(),
 });
 
-const provider = OAuthProviders.discord;
+const provider = OAuthProviders.Discord;
 const { state: discordOAuthStateCookie } = oAuthCookieNames.discord;
 
 export async function GET(request: Request): Promise<Response> {

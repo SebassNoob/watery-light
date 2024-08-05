@@ -20,7 +20,7 @@ const validate = z.object({
 	state: z.string(),
 });
 
-const provider = OAuthProviders.github;
+const provider = OAuthProviders.Github;
 const { state: githubOAuthStateCookie } = oAuthCookieNames.github;
 
 export async function GET(request: Request): Promise<Response> {

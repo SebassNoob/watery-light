@@ -20,7 +20,7 @@ const validate = z.object({
 	state: z.string(),
 });
 
-const provider = OAuthProviders.google;
+const provider = OAuthProviders.Google;
 const {
 	state: googleOAuthStateCookie,
 	codeVerifier: googleOAuthCodeVerifierCookie,

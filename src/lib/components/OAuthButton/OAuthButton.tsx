@@ -12,7 +12,7 @@ function _SizedSocialIcon({ path }: SizedSocialIconProps) {
 	);
 }
 
-function _OAuthButton({ name, path, action }: OAuthButtonProps) {
+function _oAuthButton({ name, path, action }: OAuthButtonProps) {
 	const serverAction = action.bind(null);
 	return (
 		<form action={serverAction}>
@@ -26,21 +26,21 @@ function _OAuthButton({ name, path, action }: OAuthButtonProps) {
 
 export class OAuthButton {
 	static Discord() {
-		return _OAuthButton({
+		return _oAuthButton({
 			name: "Discord",
 			path: "/icons/discord.svg",
 			action: discordSignin,
 		});
 	}
 	static GitHub() {
-		return _OAuthButton({
+		return _oAuthButton({
 			name: "GitHub",
 			path: "/icons/github.svg",
 			action: githubSignin,
 		});
 	}
 	static Google() {
-		return _OAuthButton({
+		return _oAuthButton({
 			name: "Google",
 			path: "/icons/google.svg",
 			action: googleSignin,
